@@ -19,24 +19,24 @@ const listItems = galleryItems
 
 list.insertAdjacentHTML("afterbegin", listItems);
 
-const links = document.querySelectorAll(".gallery__link");
-
-links.forEach((link) => {
-  link.addEventListener("click", showModal);
+const lightbox = basicLightbox.create(`<img src="" />`, {
+  onShow: () => window.addEventListener("keydown", escape),
+  onClose: () => window.removeEventListener("keydown", escape),
 });
 
-function showModal(event) {
+function showLightbox(event) {
   event.preventDefault();
-  const src = event.currentTarget.getAttribute("href");
-  const lightbox = basicLightbox.create(`<img src=${src} />`);
+  const src = event.target.dataset.source;
+
+  if (!src) return;
+
+  lightbox.element().querySelector("img").src = src;
   lightbox.show();
+}
 
-  const escapeLightbox = (event) => {
-    if (event.key === "Escape") {
-      lightbox.close();
-      document.removeEventListener("keydown", escapeLightbox);
-    }
-  };
+list.addEventListener("click", showLightbox);
 
-  document.addEventListener("keydown", escapeLightbox);
+function escape(event) {
+  if (event.key !== "Escape") return;
+  lightbox.close();
 }
