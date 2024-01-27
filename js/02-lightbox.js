@@ -13,8 +13,6 @@ const listItems = galleryItems
 
 list.insertAdjacentHTML("afterbegin", listItems);
 
-document.querySelector;
-
 new SimpleLightbox(".gallery a", {
   captionsData: "alt",
   captionDelay: 250,
